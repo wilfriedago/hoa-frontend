@@ -1,9 +1,22 @@
-import '../styles/global.css';
+import '@/styles/globals.css';
+import 'swiper/css';
 
-import type { AppProps } from 'next/app';
+import { Provider } from 'react-redux';
 
-const MyApp = ({ Component, pageProps }: AppProps) => (
-  <Component {...pageProps} />
-);
+import { AuthProvider, ModalProvider } from '@/contexts';
+import store from '@/store';
+import type { AppPropsWithLayout } from '@/utils/types';
+
+const MyApp: AppPropsWithLayout = ({ Component, pageProps }) => {
+  const getLayout = Component.layout ?? (page => page);
+
+  return (
+    <Provider store={store}>
+      <ModalProvider>
+        <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
+      </ModalProvider>
+    </Provider>
+  );
+};
 
 export default MyApp;

@@ -17,7 +17,10 @@
   "overrides": [
     // Configuration for TypeScript files
     {
-      "files": ["**/*.ts", "**/*.tsx"],
+      "files": [
+        "**/*.ts",
+        "**/*.tsx"
+      ],
       "plugins": [
         "@typescript-eslint",
         "unused-imports",
@@ -39,8 +42,13 @@
         "prettier/prettier": [
           "error",
           {
+            "endOfLine": "auto",
             "singleQuote": true,
-            "endOfLine": "auto"
+            "semi": true,
+            "tabWidth": 2,
+            "trailingComma": "none",
+            "printWidth": 120,
+            "arrowParens": "avoid"
           }
         ],
         "react/function-component-definition": "off", // Disable Airbnb's specific function type
@@ -64,14 +72,25 @@
         "unused-imports/no-unused-imports": "error",
         "unused-imports/no-unused-vars": [
           "error",
-          { "argsIgnorePattern": "^_" }
-        ]
+          {
+            "argsIgnorePattern": "^_"
+          }
+        ],
+        "import/no-extraneous-dependencies": "off"
       }
     },
     // Configuration for testing
     {
-      "files": ["**/*.test.ts", "**/*.test.tsx"],
-      "plugins": ["jest", "jest-formatting", "testing-library", "jest-dom"],
+      "files": [
+        "**/*.test.ts",
+        "**/*.test.tsx"
+      ],
+      "plugins": [
+        "jest",
+        "jest-formatting",
+        "testing-library",
+        "jest-dom"
+      ],
       "extends": [
         "plugin:jest/recommended",
         "plugin:jest-formatting/recommended",
@@ -81,17 +100,27 @@
     },
     // Configuration for e2e testing (Cypress)
     {
-      "files": ["cypress/**/*.ts"],
-      "plugins": ["cypress"],
-      "extends": ["plugin:cypress/recommended"],
+      "files": [
+        "cypress/**/*.ts"
+      ],
+      "plugins": [
+        "cypress"
+      ],
+      "extends": [
+        "plugin:cypress/recommended"
+      ],
       "parserOptions": {
         "project": "./cypress/tsconfig.json"
       }
     },
     // Configuration for Storybook
     {
-      "files": ["*.stories.*"],
-      "extends": ["plugin:storybook/recommended"],
+      "files": [
+        "*.stories.*"
+      ],
+      "extends": [
+        "plugin:storybook/recommended"
+      ],
       "rules": {
         "import/no-extraneous-dependencies": [
           "error",

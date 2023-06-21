@@ -1,0 +1,76 @@
+# Blood Donation App
+
+## Design
+
+- [x] Design system [Atlassian Design System](https://atlassian.design/)
+- [x] Moodboard
+- [ ] Color palette
+- [ ] Typography
+- [ ] Illustrations
+- [ ] Icons
+- [ ] Logo
+- [ ] Prototyping in Figma
+- [ ] What else ? `¯\_(ツ)_/¯`
+
+## Features
+
+- [x] Authentication
+- [ ] User Profile
+- [ ] User Dashboard (Hospital & Blood bank owner)
+- [ ] Admin Dashboard
+- [ ] Role Based Access Control
+- [ ] Requests
+- [ ] Appointments
+- [ ] Notifications
+- [ ] Communities
+- [ ] Donors
+- [ ] Donations
+- [ ] Details
+- [ ] Settings
+- [ ] Stats
+
+## Pages
+
+- [ ] Public
+  - [ ] /
+  - [ ] /about
+  - [ ] /contact
+  - [ ] /blog
+  - [ ] /faqs
+  - [ ] /terms-of-use
+  - [ ] /privacy-policy
+- [x] Auth
+  - [x] /signin
+  - [x] /signup
+  - [x] /signout
+  - [x] /reset-password
+  - [x] /verify-email
+  - [x] /verify-request
+- [ ] User
+  - [ ] /profile
+    - Allows the user to view and edit their profile information
+  - [ ] /stats
+  - [ ] /settings
+  - [ ] /notifications
+    - Displays a list of the user's notifications (e.g. when a new request is posted).
+  - [ ] /appointments
+    - Allows the user to schedule an appointment to donate blood.
+  - [ ] /details
+    - Displays the user's blood type, height, weight, etc
+  - [ ] /communities
+    - Displays a list of communities that the user is a member of.
+  - [ ] /requests
+    - Displays a list of current blood donation requests.
+    - Allows the user to filter the requests by location, blood type, etc.
+    - Allows the user to respond to a request by offering to donate blood.
+  - [ ] /donations
+    - Displays a list of the user's previous blood donations.
+- [ ] User (Hospital & Blood bank owner)
+  - [ ] /donors
+- [ ] Admin
+  - [ ] /dashboard
+  - [ ] /requests
+  - [ ] /donors
+  - [ ] /users
+  - [ ] /settings
+    - Allows the user to change their account settings, such as email and password.
