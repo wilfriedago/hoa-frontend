@@ -1,21 +1,21 @@
 import '@/styles/globals.css';
 import 'swiper/css';
 
-import { Provider } from 'react-redux';
-
-import { AuthProvider, ModalProvider } from '@/contexts';
-import store from '@/store';
+import { AuthProvider, StoreProvider } from '@/contexts';
 import type { AppPropsWithLayout } from '@/utils/types';
+
+if (process.env.NEXT_PUBLIC_API_MOCKING === 'enabled') {
+  // eslint-disable-next-line global-require
+  require('../mocks');
+}
 
 const MyApp: AppPropsWithLayout = ({ Component, pageProps }) => {
   const getLayout = Component.layout ?? (page => page);
 
   return (
-    <Provider store={store}>
-      <ModalProvider>
-        <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
-      </ModalProvider>
-    </Provider>
+    <StoreProvider>
+      <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
+    </StoreProvider>
   );
 };
 

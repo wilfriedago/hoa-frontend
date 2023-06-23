@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import GuestLayout from '@/layouts/GuestLayout';
+import { GuestLayout } from '@/layouts';
 import type { NextPageWithLayout } from '@/utils/types';
 
 const ContactPage: NextPageWithLayout = () => {

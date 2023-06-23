@@ -2,10 +2,15 @@ import { A11y, Navigation, Pagination, Scrollbar } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import CampaignCard from '@/components/campaign-card';
-import GuestLayout from '@/layouts/GuestLayout';
+import { useGetCampaignsQuery } from '@/features/campaigns';
+import { GuestLayout } from '@/layouts';
 import type { NextPageWithLayout } from '@/utils/types';
 
 const CampaignsPage: NextPageWithLayout = () => {
+  const { data } = useGetCampaignsQuery();
+
+  console.log(data);
+
   return (
     <>
       <div aria-hidden="true" className="relative">
@@ -34,8 +39,6 @@ const CampaignsPage: NextPageWithLayout = () => {
         modules={[Navigation, Pagination, Scrollbar, A11y]}
         spaceBetween={50}
         slidesPerView={3}
-        onSlideChange={() => console.log('slide change')}
-        onSwiper={swiper => console.log(swiper)}
       >
         <SwiperSlide>
           <CampaignCard />

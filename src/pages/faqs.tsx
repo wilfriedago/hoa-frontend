@@ -1,7 +1,7 @@
 import { Disclosure } from '@headlessui/react';
 import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline';
 
-import GuestLayout from '@/layouts/GuestLayout';
+import { GuestLayout } from '@/layouts';
 import type { NextPageWithLayout } from '@/utils/types';
 
 const faqs = [

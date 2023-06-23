@@ -35,5 +35,9 @@ export const appConstants = {
 export enum StorageKeys {}
 
 export enum StoreKeys {
-  LOGTO_API = 'logToApi'
+  LOGTO = 'logTo',
+  CAMPAIGNS = 'campaigns',
+  DONORS = 'donors',
+  BLOOD_GROUPS = 'bloodGroups',
+  AUTH = 'auth'
 }

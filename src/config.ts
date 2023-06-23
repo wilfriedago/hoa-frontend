@@ -7,9 +7,11 @@ export const appConfig = {
 };
 
 export const apiConfig = {
-  core: {},
+  core: {
+    baseUrl: process.env.NEXT_PUBLIC_API_CORE_ENDPOINT as string
+  },
   logto: {
-    baseUrl: ''
+    baseUrl: process.env.NEXT_PUBLIC_API_LOGTO_ENDPOINT as string
   }
 };
 
@@ -21,6 +23,8 @@ export const libConfig = {
     appSecret: process.env.NEXT_PUBLIC_LOGTO_APP_SECRET as string,
     cookieSecret: process.env.NEXT_PUBLIC_LOGTO_COOKIE_SECRET as string,
     cookieSecure: process.env.NODE_ENV === 'production',
-    scopes: ['email', 'phone', 'custom_data', 'identities']
+
+    resources: ['http://localhost:8888'], // TODO : replace with process.env.NEXT_PUBLIC_LOGTO_RESOURCES?.split(','),
+    scopes: process.env.NEXT_PUBLIC_LOGTO_SCOPES?.split(',')
   }
 };

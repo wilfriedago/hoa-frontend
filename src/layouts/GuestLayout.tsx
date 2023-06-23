@@ -1,5 +1,5 @@
 import { Dialog } from '@headlessui/react';
-import { Bars3Icon, CalendarIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { type ComponentProps, type PropsWithChildren, useState } from 'react';
 
@@ -108,7 +108,7 @@ const footerNavigation = {
   ]
 };
 
-const GuestLayout = ({ children, ...props }: Props) => {
+export const GuestLayout = ({ children, ...props }: Props) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const { isAuthenticated } = useAuth();
@@ -148,13 +148,17 @@ const GuestLayout = ({ children, ...props }: Props) => {
             <div className="flex lg:flex-1">
               <Link href="/" className="-m-1.5 p-1.5">
                 <span className="sr-only">Your Company</span>
-                <img className="h-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
+                <img className="h-8" src="https://tailwindui.com/img/logos/mark.svg?color=rose&shade=600" alt="" />
               </Link>
             </div>
 
             <div className="hidden lg:flex lg:gap-x-10">
               {navigation.map(item => (
-                <Link key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-gray-900">
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-sm font-semibold leading-6 text-gray-900 hover:underline"
+                >
                   {item.name}
                 </Link>
               ))}
@@ -173,8 +177,7 @@ const GuestLayout = ({ children, ...props }: Props) => {
 
             <div className="hidden items-center lg:flex lg:flex-1 lg:justify-end">
               <Button className="mr-3 rounded-md bg-rose-600 shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600">
-                <Link href="/campaigns" className="flex items-center justify-center">
-                  <CalendarIcon className="mr-2 h-6 w-6" aria-hidden="true" />
+                <Link href="/campaigns" className="flex h-full w-full items-center justify-center">
                   Prendre rendez-vous
                 </Link>
               </Button>
@@ -321,5 +324,3 @@ const GuestLayout = ({ children, ...props }: Props) => {
     </>
   );
 };
-
-export default GuestLayout;

@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { StoreKeys } from '@/constants';
 
 export const LogtoApi = createApi({
-  reducerPath: StoreKeys.LOGTO_API,
+  reducerPath: StoreKeys.LOGTO,
   baseQuery: fetchBaseQuery({
     baseUrl: '/api/logto'
   }),
@@ -12,9 +12,7 @@ export const LogtoApi = createApi({
     getSession: build.query<LogtoContext, void>({
       query: () => 'user'
     })
-  }),
-  refetchOnFocus: true,
-  refetchOnReconnect: true
+  })
 });
 
 export const { useGetSessionQuery } = LogtoApi;

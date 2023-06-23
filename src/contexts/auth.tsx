@@ -3,7 +3,8 @@ import type { SerializedError } from '@reduxjs/toolkit';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import { createContext, type PropsWithChildren, useEffect, useMemo, useState } from 'react';
 
-import { useGetSessionQuery } from '@/features/auth';
+import { setUser, useGetSessionQuery } from '@/features/auth';
+import { useAppDispatch } from '@/store';
 
 type AuthContextProps = LogtoContext & {
   isError: boolean;
@@ -18,6 +19,7 @@ export const AuthContext = createContext<AuthContextProps>({
 });
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
+  const dispatch = useAppDispatch();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -25,6 +27,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   const { data, error, isError, isLoading } = useGetSessionQuery();
+
+  dispatch(setUser(data as LogtoContext));
 
   const authContextValue = useMemo(
     () => ({

@@ -76,7 +76,8 @@
             "argsIgnorePattern": "^_"
           }
         ],
-        "import/no-extraneous-dependencies": "off"
+        "import/no-extraneous-dependencies": "off",
+        "no-param-reassign": "off",
       }
     },
     // Configuration for testing

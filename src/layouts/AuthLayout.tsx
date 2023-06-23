@@ -9,6 +9,8 @@ import {
   UserGroupIcon,
   XMarkIcon
 } from '@heroicons/react/24/outline';
+import type { LogtoContext } from '@logto/next/*';
+import { Spinner } from 'bold-ui';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -17,19 +19,12 @@ import { type ComponentProps, Fragment, type PropsWithChildren } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { ShadPopover, ShadPopoverContent, ShadPopoverTrigger } from '@/components/ui/popover';
-import { useAuth, useConfirm } from '@/hooks';
+import { useAuth } from '@/hooks';
 import { signIn, signOut } from '@/lib/logto';
 
 import { Meta } from './Meta';
 
 type Props = PropsWithChildren<ComponentProps<typeof Meta>>;
-
-const user = {
-  name: 'Chelsea Hagon',
-  email: 'chelsea.hagon@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-};
 
 const navigation = [
   { name: 'Accueil', href: '/profile', icon: HomeIcon, current: true },
@@ -47,24 +42,19 @@ const Loader = () => (
   <div className="flex animate-pulse space-x-4">
     <div className="flex-1 space-y-4 py-1">
       <div className="space-y-2">
-        <div className="h-20 w-20 animate-spin rounded-full border-8 border-double border-rose-600" />
+        <Spinner borderWidth={4} size={6} />
       </div>
     </div>
   </div>
 );
 
 export const AuthLayout = ({ children, ...props }: Props) => {
-  const confirm = useConfirm();
+  let user: LogtoContext['claims'];
+  const { isAuthenticated, isLoading, isError, claims } = useAuth();
 
-  const { isAuthenticated, isLoading, userInfo, isError } = useAuth();
-
-  const handleDisconnect = () =>
-    confirm.show({
-      title: 'Vous êtes sur le point de vous déconnecter.',
-      confirmLabel: 'Se déconnecter',
-      onConfirm: () => signOut(),
-      onCancel: () => confirm.dismiss()
-    });
+  if (isAuthenticated && !isLoading && !isError && claims) {
+    user = claims;
+  }
 
   if (isLoading) {
     return (
@@ -126,8 +116,8 @@ export const AuthLayout = ({ children, ...props }: Props) => {
                   </div>
                   <div className="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-5">
                     <div className="flex items-center px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
-                      <form className="w-full">
-                        <div className="relative">
+                      <form className=" w-full">
+                        <div className="relative hidden lg:block">
                           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                             <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                           </div>
@@ -172,10 +162,14 @@ export const AuthLayout = ({ children, ...props }: Props) => {
                     <Menu as="div" className="relative ml-5 shrink-0">
                       <div>
                         <Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2">
-                          <span className="sr-only">Open user menu</span>
+                          <span className="sr-only">Ouvrir le menu</span>
                           <Avatar>
-                            <AvatarImage src={user.imageUrl} />
-                            <AvatarFallback>CN</AvatarFallback>
+                            <AvatarImage src={user.picture ?? ''} alt="" />
+                            <AvatarFallback>
+                              {String(user.name ?? user.email)
+                                .substring(0, 2)
+                                .toUpperCase()}
+                            </AvatarFallback>
                           </Avatar>
                         </Menu.Button>
                       </div>
@@ -205,7 +199,7 @@ export const AuthLayout = ({ children, ...props }: Props) => {
                             {({ active }) => (
                               <button
                                 type="button"
-                                onClick={handleDisconnect}
+                                onClick={() => signOut()}
                                 className={clsx(
                                   active ? 'bg-gray-100' : '',
                                   'block w-full px-4 py-2 text-start text-sm text-gray-700'
@@ -251,11 +245,16 @@ export const AuthLayout = ({ children, ...props }: Props) => {
                 </div>
                 <div className="border-t border-gray-200 pt-4">
                   <div className="mx-auto flex max-w-3xl items-center px-4 sm:px-6">
-                    <div className="shrink-0">
-                      <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
-                    </div>
+                    <Avatar>
+                      <AvatarImage src={user.picture ?? ''} alt="" />
+                      <AvatarFallback>
+                        {String(user.name ?? user.email)
+                          .substring(0, 2)
+                          .toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
                     <div className="ml-3">
-                      <div className="text-base font-medium text-gray-800">{user.name}</div>
+                      {user.name && <div className="text-base font-medium text-gray-800">{user.name}</div>}
                       <div className="text-sm font-medium text-gray-500">{user.email}</div>
                     </div>
                     <button
@@ -278,7 +277,7 @@ export const AuthLayout = ({ children, ...props }: Props) => {
                     ))}
                     <button
                       type="button"
-                      onClick={handleDisconnect}
+                      onClick={() => signOut()}
                       className="block w-full rounded-md px-3 py-2 text-start text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                     >
                       Se déconnecter
@@ -290,15 +289,44 @@ export const AuthLayout = ({ children, ...props }: Props) => {
                     <Link href="/requests#urgent">Demandes urgentes</Link>
                   </Button>
                   <Button className="mt-2 w-full" variant="outline">
-                    <Link href="/profile/donations">Faire un don</Link>
+                    <Link href="/campaigns">Voir les campagnes</Link>
                   </Button>
                 </div>
               </Popover.Panel>
             </>
           )}
         </Popover>
-
-        <div className="py-10">{children}</div>
+        <div className="py-10">
+          <div className="mx-auto max-w-3xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-12 lg:gap-8 lg:px-8">
+            <div className="col-span-3 hidden lg:block">
+              <nav aria-label="Sidebar" className="sticky top-4 divide-y divide-gray-300">
+                <div className="space-y-1 pb-8">
+                  {navigation.map(item => (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      className={clsx(
+                        item.current ? 'bg-gray-200 text-gray-900' : 'text-gray-700 hover:bg-gray-50',
+                        'group flex items-center rounded-md px-3 py-2 text-sm font-medium'
+                      )}
+                      aria-current={item.current ? 'page' : undefined}
+                    >
+                      <item.icon
+                        className={clsx(
+                          item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                          '-ml-1 mr-3 h-6 w-6 shrink-0'
+                        )}
+                        aria-hidden="true"
+                      />
+                      <span className="truncate">{item.name}</span>
+                    </a>
+                  ))}
+                </div>
+              </nav>
+            </div>
+            <main className="lg:col-span-12 xl:col-span-9">{children}</main>
+          </div>
+        </div>
       </div>
     </>
   );
